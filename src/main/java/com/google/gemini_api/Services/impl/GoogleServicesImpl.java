@@ -76,6 +76,7 @@ public class GoogleServicesImpl implements GoogleServices {
 				}
 		);
 
+
 		return webClient.post()
 				.uri(geminiUrl + geminiKey)
 				.header("Content-Type", "application/json")
