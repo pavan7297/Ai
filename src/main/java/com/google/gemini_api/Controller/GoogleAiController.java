@@ -29,4 +29,18 @@ public class GoogleAiController {
         String answer = googleServices.googleAi(question);
         return ResponseEntity.ok(answer);
     }
+
+    @PostMapping("/ai/cricket")
+    public ResponseEntity<String> cricketAi(@RequestBody Map<String, String> payload) {
+        String question = payload.get("payload");
+        String answer = googleServices.cricketAi(question);
+        return ResponseEntity.ok(answer);
+    }
+
+    @PostMapping("/ai/coding")
+    public ResponseEntity<String> codingAi(@RequestBody Map<String, String> payload) {
+        String question = payload.get("payload");
+        String answer = googleServices.codingAi(question);
+        return ResponseEntity.ok(answer);
+    }
 }

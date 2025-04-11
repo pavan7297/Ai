@@ -29,13 +29,59 @@ public class GoogleServicesImpl implements GoogleServices {
 
 	@Override
 	public String googleAi(String dataPayload) {
+		
+        //Construct the request payload with this
+
+//      {
+//          "contents": [{
+//          "parts":[{"text": "Explain how AI works"}]
+//      }]
+//      }
 
 		Map<String, Object> requestBody = Map.of("contents",
 				new Object[] { Map.of("parts", new Object[] { Map.of("text", dataPayload) }) });
 
+
+
+        // Make Api Call
 		String responce = webClient.post().uri(geminiUrl + geminiKey).header("Content-Type", "application/json")
 				.bodyValue(requestBody).retrieve().bodyToMono(String.class).block();
 
 		return responce;
+	}
+
+	@Override
+	public String cricketAi(String question) {
+		if (!question.toLowerCase().contains("cricket")) {
+			return "This question doesn't seem to be about cricket. But here's a cricket joke instead:\n\n" +
+					"Why did the cricket team bring string to the game?\nBecause they wanted to tie the match!";
+		}
+
+		String prompt = "You are a cricket expert. Answer the following question: " + question;
+		return sendToGemini(prompt);
+	}
+
+	@Override
+	public String codingAi(String question) {
+		String prompt = "You are a senior software engineer. Explain the following with examples if needed: " + question;
+		return sendToGemini(prompt);
+	}
+
+	private String sendToGemini(String dataPayload) {
+		Map<String, Object> requestBody = Map.of(
+				"contents", new Object[]{
+						Map.of("parts", new Object[]{
+								Map.of("text", dataPayload)
+						})
+				}
+		);
+
+		return webClient.post()
+				.uri(geminiUrl + geminiKey)
+				.header("Content-Type", "application/json")
+				.bodyValue(requestBody)
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
 	}
 }
